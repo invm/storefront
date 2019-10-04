@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-
 const OrderSchema = require('./Order');
 
 const ShopSchema = new Schema({
+  client: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'clients'
+  },
   name: {
     type: String,
     required: true
@@ -24,4 +27,4 @@ const ShopSchema = new Schema({
   orders: [OrderSchema]
 });
 
-module.exports = ShopSchema;
+module.exports = mongoose.model('store', ShopSchema);

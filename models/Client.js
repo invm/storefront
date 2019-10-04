@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-const ShopSchema = require('./Shop');
-
 const ClientSchema = mongoose.Schema({
   name: {
     type: String,
@@ -24,7 +22,12 @@ const ClientSchema = mongoose.Schema({
     type: String,
     requiured: true
   },
-  shops: [ShopSchema]
+  stores: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'stores'
+    }
+  ]
 });
 
 module.exports = mongoose.model('client', ClientSchema);
