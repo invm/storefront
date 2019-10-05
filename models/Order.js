@@ -11,7 +11,7 @@ const ProductSchema = new Schema({
 const OrderSchema = new Schema({
   store: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'shops'
+    ref: 'stores'
   },
   date: {
     type: Date,

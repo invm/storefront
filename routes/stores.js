@@ -21,7 +21,11 @@ router.get('/', auth, async (req, res) => {
     });
     // Loop through every store, check every order, if delivery date is passed,
     // then change isDelivered to true, update, than send response.
-    res.json(stores);
+    let data = {
+      client: req.client,
+      stores
+    };
+    res.json(data);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -60,6 +64,10 @@ router.post(
         client: req.client.id
       });
       const store = await newStore.save();
+      // Add store to client
+      let client = await Client.findById(req.client.id);
+      client.stores.push(store);
+      client.save();
       res.json(store);
     } catch (err) {
       console.error(err.message);
@@ -95,26 +103,14 @@ router.put('/:storeId', auth, async (req, res) => {
       // Handle orders
       if (orderFields.newOrder) {
         // Push new order to order list
-        store = await Store.findByIdAndUpdate(
-          req.params.storeId,
-          {
-            $push: { orders: orderFields.newOrder }
-          },
-          {
-            new: true
-          }
-        );
+        store.orders.push(orderFields.newOrder);
+        store.save();
       } else {
-        let order = store.orders.id(orderFields.updateOrder._id);
-        Store.updateOne(
-          {
-            _id: req.params.storeId,
-            orders: {
-              $elemMatch: { _id: order }
-            }
-          },
-          { $set: { 'orders.$': orderFields.updateOrder } }
-        );
+        // Update order by deleting it and pushing the new order to the array.
+        // When updating order, must provide order id to remove.
+        store.orders.id(orderFields.updateOrder._id).remove();
+        store.orders.push(updateOrder);
+        store.save();
       }
     }
     if (Object.keys(storeFields).length > 0) {
@@ -123,14 +119,35 @@ router.put('/:storeId', auth, async (req, res) => {
         req.params.storeId,
         {
           $set: storeFields
-        },
-        {
-          new: true
         }
+        // ,{ // If does not exists, create new, this line is not needed, just for reference.
+        //   new: true
+        // }
       );
     }
 
     res.json(store);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route       DELETE api/stores
+// @desc        Delete store and all nested info.
+// @access      Private
+
+router.delete('/:storeId', auth, async (req, res) => {
+  try {
+    let store = await Store.findById(req.params.storeId);
+    if (!store) {
+      res.status(404).json({ msg: 'Store not found' });
+    }
+    if (store.client.toString() !== req.client.id) {
+      res.status(401).json({ msg: 'Not authorized' });
+    }
+    await Store.findByIdAndRemove(req.params.storeId);
+    res.json({ msg: 'Your store and all related data has been deleted.' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
