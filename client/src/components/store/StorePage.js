@@ -64,6 +64,8 @@ const StorePage = props => {
             {contact.phone}
           </div>
           <hr />
+          <Button> Add Order</Button>
+          <Button> Update Order</Button>
           {
             // TODO add order modal, destructure all modals outside of this file, the add order function should receive store id and the new order, should look like the update method in order to re render the page
             // TODO update order modal, should receive store id and the updated order
