@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const ProductSchema = new Schema({
   supplier: String,
   name: String,
-  quantity: { type: Number, default: 1 }
+  quantityInBox: { type: Number, default: 1 },
+  quantityOrdered: { type: Number, default: 1 }
 });
 
 const OrderSchema = new Schema({

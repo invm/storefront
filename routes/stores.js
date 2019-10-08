@@ -35,6 +35,7 @@ router.get('/', auth, async (req, res) => {
 // @route       POST api/stores
 // @desc        Add a store
 // @access      Private
+
 router.post(
   '/',
   [
@@ -146,6 +147,15 @@ router.delete('/:storeId', auth, async (req, res) => {
     if (store.client.toString() !== req.client.id) {
       res.status(401).json({ msg: 'Not authorized' });
     }
+
+    await Client.findByIdAndUpdate(
+      { _id: req.client.id },
+      {
+        $pull: {
+          stores: req.params.storeId
+        }
+      }
+    );
     await Store.findByIdAndRemove(req.params.storeId);
     res.json({ msg: 'Your store and all related data has been deleted.' });
   } catch (err) {

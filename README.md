@@ -1,0 +1,1 @@
+- Add default.json in config folder and add mongoURI and jwtSecret

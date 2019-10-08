@@ -27,4 +27,4 @@ const ShopSchema = new Schema({
   orders: [OrderSchema]
 });
 
-module.exports = mongoose.model('store', ShopSchema);
+module.exports = mongoose.model('shops', ShopSchema);
