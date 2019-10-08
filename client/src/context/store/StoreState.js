@@ -198,7 +198,7 @@ const StoreState = props => {
 
   const [state, dispatch] = useReducer(StoreReducer, initialState);
 
-  // Add shop
+  // Add store
   const addStore = store => {
     store.id = uuid.v4();
     store.orders = [];
@@ -208,19 +208,41 @@ const StoreState = props => {
     });
   };
 
-  // Delete shop
+  // Delete store
+  const deleteStore = id => {
+    dispatch({
+      type: DELETE_STORE,
+      payload: id
+    });
+  };
 
-  // Set current shop
-
-  // Clear current shop
-
-  // Update shop
+  // Update store
+  const updateStore = (id, store) => {
+    dispatch({
+      type: UPDATE_STORE,
+      payload: { id, store }
+    });
+  };
 
   // Add order
 
+  const addOrder = (storeId, order) => {
+    dispatch({
+      type: ADD_STORE,
+      payload: { id: storeId, order }
+    });
+  };
+
   // Update order
 
-  // Filter shops
+  const updateOrder = (storeId, order) => {
+    dispatch({
+      type: ADD_STORE,
+      payload: { id: storeId, order }
+    });
+  };
+
+  // Filter stores
 
   // Clear filter
 
@@ -229,7 +251,11 @@ const StoreState = props => {
       value={{
         stores: state.stores,
         client: state.client,
-        addStore
+        addStore,
+        deleteStore,
+        updateStore,
+        addOrder,
+        updateOrder
       }}
     >
       {props.children}

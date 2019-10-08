@@ -17,7 +17,7 @@ const StoresList = ({ stores, client }) => {
             }
           }}
         >
-          {!stores ? (
+          {stores.length === 0 ? (
             <Button>Add First Store</Button>
           ) : (
             <Button>Add Store</Button>

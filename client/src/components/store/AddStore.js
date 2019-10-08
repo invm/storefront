@@ -159,7 +159,7 @@ const AddStore = props => {
           </Col>
         </FormGroup>
         <FormGroup row>
-          <Label for='exampleSelect' sm={2}>
+          <Label for='storeSize' sm={2}>
             Store Size
           </Label>
           <Col sm={10}>
