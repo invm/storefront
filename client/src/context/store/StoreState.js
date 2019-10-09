@@ -5,8 +5,6 @@ import StoreReducer from './storeReducer';
 import {
   ADD_STORE,
   DELETE_STORE,
-  SET_CURRENT,
-  CLEAR_CURRENT,
   UPDATE_STORE,
   FILTER_STORES,
   CLEAR_FILTER,
@@ -225,7 +223,6 @@ const StoreState = props => {
   };
 
   // Add order
-
   const addOrder = (storeId, order) => {
     dispatch({
       type: ADD_STORE,

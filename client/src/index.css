@@ -45,7 +45,7 @@ a {
 }
 
 .fade-in {
-  animation: fade-in 0.4s ease-in-out;
+  animation: fade-in 0.2s ease-in-out;
 }
 
 @keyframes fade-in {
