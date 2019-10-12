@@ -5,11 +5,9 @@ import StoreReducer from './storeReducer';
 import {
   ADD_STORE,
   DELETE_STORE,
-  UPDATE_STORE,
-  FILTER_STORES,
-  CLEAR_FILTER,
-  ADD_ORDER,
-  UPDATE_ORDER
+  UPDATE_STORE
+  // ADD_ORDER,
+  // UPDATE_ORDER
 } from '../types';
 
 const StoreState = props => {

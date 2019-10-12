@@ -1,13 +1,7 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-
-const ProductSchema = new Schema({
-  supplier: String,
-  name: String,
-  quantityInBox: { type: Number, default: 1 },
-  quantityOrdered: { type: Number, default: 1 }
-});
+const Product = require('./Product');
 
 const OrderSchema = new Schema({
   store: {
@@ -18,7 +12,7 @@ const OrderSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  products: [ProductSchema],
+  products: [Product],
   status: {
     type: Boolean,
     default: true
@@ -30,7 +24,8 @@ const OrderSchema = new Schema({
   signedBy: {
     name: String,
     phone: String
-  }
+  },
+  sum: Number
 });
 
 module.exports = OrderSchema;

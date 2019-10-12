@@ -42,7 +42,7 @@ const OrdersList = ({ orders }) => {
                   justifyContent: 'space-between'
                 }}
               >
-                <span>{_id}</span>
+                <span>Order #{_id}</span>
                 <Badge color={`${status ? 'success' : 'danger'}`}>
                   {status ? 'Active' : 'Inactive'}
                 </Badge>

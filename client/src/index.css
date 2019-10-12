@@ -45,7 +45,7 @@ a {
 }
 
 .fade-in {
-  animation: fade-in 0.2s ease-in-out;
+  animation: fade-in 0.4s ease-in-out;
 }
 
 @keyframes fade-in {
@@ -55,4 +55,31 @@ a {
   to {
     opacity: 1;
   }
+}
+
+@media only screen and (max-width: 576px) {
+}
+
+input[type='radio'] {
+  display: none;
+}
+
+.row {
+  margin: 0.5rem 0 !important;
+  justify-content: space-between !important;
+}
+
+.products-list {
+  margin: 0.2rem;
+  padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+input#deliveryDate {
+  /* only to get rid of some warning in the console*/
+  -webkit-appearance: unset !important;
 }

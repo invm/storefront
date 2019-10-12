@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import StoreContext from '../../context/store/storeContext';
+import React, { /* useContext, */ useState, useEffect } from 'react';
+// import StoreContext from '../../context/store/storeContext';
 import {
   Container,
   Col,
@@ -7,23 +7,83 @@ import {
   Form,
   FormGroup,
   Label,
-  Input,
-  FormText
+  Input
 } from 'reactstrap';
+import ProductsList from './ProductsList';
 
-const AddStore = () => {
-  const storeContext = useContext(StoreContext);
+const AddOrder = ({ id }) => {
+  const [sum, setSum] = useState(0);
+  const [orderProducts, setOrderProducts] = useState([]);
 
-  const { stores } = storeContext;
+  useEffect(() => {
+    let newSum = orderProducts.reduce((total, current) => {
+      return total + current.price * current.quantityOrdered;
+    }, 0);
+    setSum(newSum);
+  }, [orderProducts]);
 
-  const storeNames = stores ? stores.map(store => store.name) : null;
+  const removeItems = e => {
+    let select = document.querySelector('#selectedProducts').selectedOptions;
+    let toDelete = [];
+    for (let option of select) {
+      toDelete.push(option.value);
+    }
+    setOrderProducts(
+      orderProducts.filter(product => {
+        // Check for every item, all selected products
+        let flag = 1;
+        for (let i = 0; i < toDelete.length && flag; i++) {
+          if (product.name === toDelete[i]) {
+            flag = 0;
+            break;
+          }
+        }
+        if (flag) return product;
+        return null;
+      })
+    );
+  };
+
+  const addItem = product => {
+    // Check if already in list
+    let flag = 1;
+    for (let item of orderProducts) {
+      if (item.id === product.id) {
+        flag = 0;
+      }
+    }
+    // If not than add as is
+    let orders;
+    if (flag) {
+      orders = [...orderProducts, product];
+    } else {
+      // Else only change quantity
+      orders = [
+        ...orderProducts.map(item => {
+          if (item.id === product.id) {
+            item.quantityOrdered += product.quantityOrdered;
+          }
+          return item;
+        })
+      ];
+    }
+    setOrderProducts(orders);
+  };
 
   const date = new Date().toString().slice(0, 21);
   return (
     <Container className='card fade-in my-3'>
       <Form className='my-2'>
         <FormGroup row>
-          <Label for='exampleEmail' sm={2}>
+          <Label for='store-id' sm={2}>
+            Store ID
+          </Label>
+          <Col sm={10}>
+            <Input disabled type='text' name='store-id' value={id} id='id' />
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Label for='order-time' sm={2}>
             Order Time
           </Label>
           <Col sm={10}>
@@ -32,93 +92,53 @@ const AddStore = () => {
         </FormGroup>
         <FormGroup row>
           <Label for='examplePassword' sm={2}>
-            Order Delivery Time
-          </Label>
-          <Col sm={10}>
-            <Input type='date' name='deliveryDate' id='deliveryDate' />
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label for='exampleSelect' sm={2}>
-            Select
-          </Label>
-          <Col sm={10}>
-            <Input type='select' name='select' id='exampleSelect'>
-              {storeNames
-                ? storeNames.map(store => (
-                    <option value={store}>{store}</option>
-                  ))
-                : null}
-            </Input>
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label for='exampleSelectMulti' sm={2}>
-            Select Multiple
+            Delivery Date
           </Label>
           <Col sm={10}>
             <Input
-              type='select'
-              name='selectMulti'
-              id='exampleSelectMulti'
-              multiple
+              type='date'
+              // Min date is tomorrow
+              min={
+                new Date().toISOString().slice(0, 9) +
+                (Number(new Date().toISOString().slice(9, 10)) === 9
+                  ? 0
+                  : Number(new Date().toISOString().slice(9, 10)) + 1)
+              }
+              name='deliveryDate'
+              id='deliveryDate'
             />
           </Col>
         </FormGroup>
         <FormGroup row>
-          <Label for='exampleText' sm={2}>
-            Text Area
+          <Label for='selectedProducts' sm={2}>
+            Products:
           </Label>
-          <Col sm={10}>
-            <Input type='textarea' name='text' id='exampleText' />
+          <Col sm={8}>
+            <Input type='select' id='selectedProducts' multiple>
+              {orderProducts.map(product => (
+                <option key={product.id} value={product.name}>
+                  {product.name}, Ordered {product.quantityOrdered} boxes, total
+                  price: {product.quantityOrdered * product.price}$
+                </option>
+              ))}
+            </Input>
+          </Col>
+          <Col sm={2}>
+            <Button block onClick={removeItems}>
+              Remove Product
+            </Button>
           </Col>
         </FormGroup>
         <FormGroup row>
-          <Label for='exampleFile' sm={2}>
-            File
+          <Label for='selectedProducts' sm={2}>
+            Total Price:
           </Label>
           <Col sm={10}>
-            <Input type='file' name='file' id='exampleFile' />
-            <FormText color='muted'>
-              This is some placeholder block-level help text for the above
-              input. It's a bit lighter and easily wraps to a new line.
-            </FormText>
-          </Col>
-        </FormGroup>
-        <FormGroup tag='fieldset' row>
-          <legend className='col-form-label col-sm-2'>Radio Buttons</legend>
-          <Col sm={10}>
-            <FormGroup check>
-              <Label check>
-                <Input type='radio' name='radio2' /> Option one is this and
-                that—be sure to include why it's great
-              </Label>
-            </FormGroup>
-            <FormGroup check>
-              <Label check>
-                <Input type='radio' name='radio2' /> Option two can be something
-                else and selecting it will deselect option one
-              </Label>
-            </FormGroup>
-            <FormGroup check disabled>
-              <Label check>
-                <Input type='radio' name='radio2' disabled /> Option three is
-                disabled
-              </Label>
-            </FormGroup>
+            <h3>{sum} $</h3>
           </Col>
         </FormGroup>
         <FormGroup row>
-          <Label for='checkbox2' sm={2}>
-            Checkbox
-          </Label>
-          <Col sm={{ size: 10 }}>
-            <FormGroup check>
-              <Label check>
-                <Input type='checkbox' id='checkbox2' /> Check me out
-              </Label>
-            </FormGroup>
-          </Col>
+          <ProductsList addItem={addItem} />
         </FormGroup>
         <FormGroup check row>
           <Col sm={{ size: 10, offset: 2 }}>
@@ -129,4 +149,4 @@ const AddStore = () => {
     </Container>
   );
 };
-export default AddStore;
+export default AddOrder;

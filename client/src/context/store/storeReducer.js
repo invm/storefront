@@ -2,8 +2,6 @@ import {
   ADD_STORE,
   DELETE_STORE,
   UPDATE_STORE,
-  FILTER_STORES,
-  CLEAR_FILTER,
   ADD_ORDER,
   UPDATE_ORDER
 } from '../types';
@@ -45,7 +43,7 @@ export default (state, action) => {
           })
         ]
       };
-    case ADD_ORDER:
+    case UPDATE_ORDER:
       return {
         ...state,
         stores: [
