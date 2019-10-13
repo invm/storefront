@@ -73,6 +73,7 @@ input[type='radio'] {
   margin: 0.2rem;
   padding: 1rem 0.5rem;
   display: flex;
+  justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
   border: 1px solid rgba(0, 0, 0, 0.125);

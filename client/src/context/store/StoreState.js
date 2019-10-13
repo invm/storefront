@@ -1,11 +1,13 @@
 import React, { useReducer } from 'react';
 import uuid from 'uuid';
+import axios from 'axios';
 import StoreContext from './storeContext';
 import StoreReducer from './storeReducer';
 import {
   ADD_STORE,
   DELETE_STORE,
-  UPDATE_STORE
+  UPDATE_STORE,
+  GET_PRODUCTS
   // ADD_ORDER,
   // UPDATE_ORDER
 } from '../types';
@@ -13,6 +15,7 @@ import {
 const StoreState = props => {
   const initialState = {
     client: '5d967388d62205626e217ded',
+    products: {},
     stores: [
       {
         size: 'medium',
@@ -37,6 +40,7 @@ const StoreState = props => {
             _id: '5d9825c71fe2c7153e280fd7',
             status: false,
             isDelivered: false,
+            sum: 123,
             orderDate: '2019-01-09T22:00:00.000Z',
             deliveryDate: '2019-10-02T22:00:00.000Z',
             products: [
@@ -97,6 +101,7 @@ const StoreState = props => {
             isDelivered: false,
             orderDate: '2019-01-09T22:00:00.000Z',
             deliveryDate: '2019-10-02T22:00:00.000Z',
+            sum: 123,
             products: [
               {
                 quantityOrdered: 10,
@@ -113,6 +118,7 @@ const StoreState = props => {
               name: 'Michael',
               phone: '1234567890'
             },
+            sum: 453,
             status: true,
             isDelivered: true,
             orderDate: '2019-01-09T22:00:00.000Z',
@@ -154,6 +160,7 @@ const StoreState = props => {
               name: 'Jonathan',
               phone: '1234567890'
             },
+            sum: 543,
             status: false,
             isDelivered: false,
             orderDate: '2019-01-09T22:00:00.000Z',
@@ -237,8 +244,39 @@ const StoreState = props => {
     });
   };
 
-  // Filter stores
+  // Get products
+  const getProducts = async () => {
+    const products = {
+      bakery: [],
+      beverages: [],
+      canned: [],
+      'personal Care': [],
+      meat: [],
+      produce: [],
+      cleaners: [],
+      'dry Goods': [],
+      dairy: [],
+      other: []
+    };
+    let res = [];
+    await axios
+      .get('/api/products')
+      .then(response => {
+        res = [...response.data];
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
+    res.forEach(product => {
+      products[`${product.category}`].push(product);
+    });
+
+    dispatch({
+      type: GET_PRODUCTS,
+      payload: products
+    });
+  };
   // Clear filter
 
   return (
@@ -250,7 +288,9 @@ const StoreState = props => {
         deleteStore,
         updateStore,
         addOrder,
-        updateOrder
+        updateOrder,
+        getProducts,
+        products: state.products
       }}
     >
       {props.children}

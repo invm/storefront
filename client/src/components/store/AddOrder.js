@@ -1,4 +1,5 @@
 import React, { /* useContext, */ useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 // import StoreContext from '../../context/store/storeContext';
 import {
   Container,
@@ -11,7 +12,7 @@ import {
 } from 'reactstrap';
 import ProductsList from './ProductsList';
 
-const AddOrder = ({ id }) => {
+const AddOrder = ({ store }) => {
   const [sum, setSum] = useState(0);
   const [orderProducts, setOrderProducts] = useState([]);
 
@@ -35,6 +36,7 @@ const AddOrder = ({ id }) => {
         for (let i = 0; i < toDelete.length && flag; i++) {
           if (product.name === toDelete[i]) {
             flag = 0;
+            product.quantityOrdered = 0;
             break;
           }
         }
@@ -48,7 +50,7 @@ const AddOrder = ({ id }) => {
     // Check if already in list
     let flag = 1;
     for (let item of orderProducts) {
-      if (item.id === product.id) {
+      if (item._id === product._id) {
         flag = 0;
       }
     }
@@ -58,14 +60,7 @@ const AddOrder = ({ id }) => {
       orders = [...orderProducts, product];
     } else {
       // Else only change quantity
-      orders = [
-        ...orderProducts.map(item => {
-          if (item.id === product.id) {
-            item.quantityOrdered += product.quantityOrdered;
-          }
-          return item;
-        })
-      ];
+      orders = [...orderProducts];
     }
     setOrderProducts(orders);
   };
@@ -78,8 +73,38 @@ const AddOrder = ({ id }) => {
           <Label for='store-id' sm={2}>
             Store ID
           </Label>
-          <Col sm={10}>
-            <Input disabled type='text' name='store-id' value={id} id='id' />
+          <Col xs={8}>
+            <Input
+              disabled
+              type='text'
+              name='store-id'
+              value={store._id}
+              id='id'
+            />
+          </Col>
+          <Col>
+            <Link
+              className='mx-1'
+              to={{
+                pathname: `/store/${store._id}`,
+                state: {
+                  store
+                }
+              }}
+            >
+              <Button
+                color='dark'
+                style={{
+                  display: 'inline-block',
+                  fontSize: '1.4rem',
+                  padding: '0.15rem 0.3rem'
+                }}
+              >
+                <span role='img' aria-label='back'>
+                  🔙
+                </span>
+              </Button>
+            </Link>
           </Col>
         </FormGroup>
         <FormGroup row>
@@ -91,10 +116,10 @@ const AddOrder = ({ id }) => {
           </Col>
         </FormGroup>
         <FormGroup row>
-          <Label for='examplePassword' sm={2}>
+          <Label for='deliveryDate' md={2}>
             Delivery Date
           </Label>
-          <Col sm={10}>
+          <Col md={10}>
             <Input
               type='date'
               // Min date is tomorrow
@@ -110,22 +135,22 @@ const AddOrder = ({ id }) => {
           </Col>
         </FormGroup>
         <FormGroup row>
-          <Label for='selectedProducts' sm={2}>
+          <Label for='selectedProducts' md={2}>
             Products:
           </Label>
-          <Col sm={8}>
+          <Col md={8}>
             <Input type='select' id='selectedProducts' multiple>
               {orderProducts.map(product => (
-                <option key={product.id} value={product.name}>
+                <option key={product._id} value={product.name}>
                   {product.name}, Ordered {product.quantityOrdered} boxes, total
-                  price: {product.quantityOrdered * product.price}$
+                  price: {(product.quantityOrdered * product.price).toFixed(2)}$
                 </option>
               ))}
             </Input>
           </Col>
-          <Col sm={2}>
+          <Col md={2}>
             <Button block onClick={removeItems}>
-              Remove Product
+              Remove
             </Button>
           </Col>
         </FormGroup>
@@ -134,7 +159,7 @@ const AddOrder = ({ id }) => {
             Total Price:
           </Label>
           <Col sm={10}>
-            <h3>{sum} $</h3>
+            <h3>{sum.toFixed(2)} $</h3>
           </Col>
         </FormGroup>
         <FormGroup row>

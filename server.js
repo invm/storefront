@@ -14,10 +14,12 @@ app.get('/', (req, res) => res.json({ msg: 'Welcome to the storefront API' }));
 const auth = require('./routes/auth');
 const clients = require('./routes/clients');
 const stores = require('./routes/stores');
+const products = require('./routes/products');
 
 app.use('/api/auth', auth);
 app.use('/api/clients', clients);
 app.use('/api/stores', stores);
+app.use('/api/products', products);
 
 const PORT = process.env.PORT || 5000;
 

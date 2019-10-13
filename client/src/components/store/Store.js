@@ -31,7 +31,7 @@ const Store = props => {
         to={{
           pathname: `/store/${_id}`,
           state: {
-            ...props.store
+            store: props.store
           }
         }}
       >

@@ -1,18 +1,27 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-const Product = require('./Product');
 
 const OrderSchema = new Schema({
   store: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'stores'
   },
-  date: {
+  orderDate: {
     type: Date,
     default: Date.now
   },
-  products: [Product],
+  deliveryDate: {
+    type: Date,
+    default: Date.now
+  },
+  products: [
+    {
+      name: String,
+      quantityOrdered: Number,
+      price: Number
+    }
+  ],
   status: {
     type: Boolean,
     default: true

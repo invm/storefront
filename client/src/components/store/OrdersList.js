@@ -31,7 +31,8 @@ const OrdersList = ({ orders }) => {
             isDelivered,
             orderDate,
             deliveryDate,
-            products
+            products,
+            sum
           } = order;
           return (
             <div key={_id} className='card my-1 p-1'>
@@ -47,7 +48,8 @@ const OrdersList = ({ orders }) => {
                   {status ? 'Active' : 'Inactive'}
                 </Badge>
               </Alert>
-              <>Order date: {orderDate}</>
+              <span>Order date: {orderDate}</span>
+              <h5>Total price: {sum}</h5>
               <span>
                 {status ? (
                   <>
@@ -70,9 +72,10 @@ const OrdersList = ({ orders }) => {
               {products ? (
                 <div>
                   <h6>Products ordered:</h6>
-                  <Toggle products={products} />
+                  <Products products={products} />
                 </div>
               ) : null}
+              {}
             </div>
           );
         })}
@@ -83,7 +86,7 @@ const OrdersList = ({ orders }) => {
 
 export default OrdersList;
 
-const Toggle = ({ products }) => {
+const Products = ({ products }) => {
   const [collapse, setCollapse] = useState(false);
 
   const toggle = () => {
@@ -113,8 +116,9 @@ const Toggle = ({ products }) => {
                 <br />
                 <span>Quantity ordered: {product.quantityOrdered}</span>
                 <br />
-                <span>Quantity in box: {product.quantityInBox}</span>
+                <span>Price: {product.price}</span>
                 <br />
+                <span>Total : {product.quantityOrdered * product.price}</span>
               </p>
             ))}
           </CardBody>

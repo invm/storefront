@@ -3,11 +3,17 @@ import {
   DELETE_STORE,
   UPDATE_STORE,
   ADD_ORDER,
-  UPDATE_ORDER
+  UPDATE_ORDER,
+  GET_PRODUCTS
 } from '../types';
 
 export default (state, action) => {
   switch (action.type) {
+    case GET_PRODUCTS:
+      return {
+        ...state,
+        products: action.payload
+      };
     case ADD_STORE:
       return {
         ...state,
