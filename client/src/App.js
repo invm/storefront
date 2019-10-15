@@ -1,45 +1,57 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import setAuthToken from './utils/setAuthToken';
+
 import AppNavbar from './components/layout/AppNavbar';
-import { Home, About } from './components/pages';
+import Alerts from './components/layout/Alerts';
 
 import StoreState from './context/store/StoreState';
-import StorePage from './components/pages/StorePage';
-import Dashboard from './components/pages/Dashboard';
-import AddStore from './components/pages/AddStore';
-import AddOrderPage from './components/pages/AddOrderPage';
+import AuthState from './context/auth/AuthState';
+import AlertState from './context/alert/AlertState';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
+import {
+  Home,
+  About,
+  StorePage,
+  Dashboard,
+  AddStore,
+  AddOrderPage
+} from './components/pages';
+import PrivateRoute from './components/routing/PrivateRoute';
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 const App = () => {
   return (
-    <StoreState>
-      <Router>
-        <AppNavbar />
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route exact path='/about' component={About} />
-          <Route
-            exact
-            path='/dashboard'
-            render={props => <Dashboard props={props} />}
-          />
-          <Route
-            exact
-            path='/store/:id'
-            render={props => <StorePage props={props} />}
-          />
-          <Route
-            exact
-            path='/addstore'
-            render={props => <AddStore props={props} />}
-          />
-          <Route
-            exact
-            path='/addorder/:storeId'
-            render={props => <AddOrderPage props={props} />}
-          />
-        </Switch>
-      </Router>
-    </StoreState>
+    <AuthState>
+      <StoreState>
+        <AlertState>
+          <Router>
+            <AppNavbar />
+            <Alerts />
+            <Switch>
+              <Route exact path='/' component={Home} />
+              <Route exact path='/about' component={About} />
+              <Route exact path='/register' component={Register} />
+              <Route exact path='/login' component={Login} />
+              <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <PrivateRoute exact path='/addstore' component={AddStore} />
+              <PrivateRoute exact path='/store/:id' component={StorePage} />} />
+              <PrivateRoute
+                exact
+                path='/addorder/:storeId'
+                component={AddOrderPage}
+              />
+              } /> />
+            </Switch>
+          </Router>
+        </AlertState>
+      </StoreState>
+    </AuthState>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { /* useContext, */ useState, useEffect } from 'react';
+import React, { /* useContext ,*/ useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 // import StoreContext from '../../context/store/storeContext';
 import {
@@ -13,8 +13,10 @@ import {
 import ProductsList from './ProductsList';
 
 const AddOrder = ({ store }) => {
+  // const storeContext = useContext(StoreContext);
   const [sum, setSum] = useState(0);
   const [orderProducts, setOrderProducts] = useState([]);
+  const [order, setOrder] = useState({ store: store._id });
 
   useEffect(() => {
     let newSum = orderProducts.reduce((total, current) => {
@@ -65,6 +67,25 @@ const AddOrder = ({ store }) => {
     setOrderProducts(orders);
   };
 
+  const onSubmit = e => {
+    e.preventDefault();
+    if (orderProducts.length > 0) {
+      let newOrder = {
+        ...order,
+        orderDate: new Date().toString().slice(0, 21)
+      };
+      console.log(newOrder);
+      // storeContext.addOrder(store._id);
+    }
+  };
+
+  const onChange = e => {
+    setOrder({
+      ...order,
+      [e.target.id]: e.target.value
+    });
+  };
+
   const date = new Date().toString().slice(0, 21);
   return (
     <Container className='card fade-in my-3'>
@@ -112,7 +133,13 @@ const AddOrder = ({ store }) => {
             Order Time
           </Label>
           <Col sm={10}>
-            <Input disabled type='text' name='date' value={date} id='date' />
+            <Input
+              disabled
+              type='text'
+              name='order-time'
+              value={date}
+              id='order-time'
+            />
           </Col>
         </FormGroup>
         <FormGroup row>
@@ -122,6 +149,7 @@ const AddOrder = ({ store }) => {
           <Col md={10}>
             <Input
               type='date'
+              onChange={onChange}
               // Min date is tomorrow
               min={
                 new Date().toISOString().slice(0, 9) +
@@ -142,8 +170,12 @@ const AddOrder = ({ store }) => {
             <Input type='select' id='selectedProducts' multiple>
               {orderProducts.map(product => (
                 <option key={product._id} value={product.name}>
-                  {product.name}, Ordered {product.quantityOrdered} boxes, total
-                  price: {(product.quantityOrdered * product.price).toFixed(2)}$
+                  {product.name}, Ordered{' '}
+                  {product.quantityOrdered === 1
+                    ? product.quantityOrdered + ' box'
+                    : product.quantityOrdered + ' boxes'}{' '}
+                  , total price:{' '}
+                  {(product.quantityOrdered * product.price).toFixed(2)}$
                 </option>
               ))}
             </Input>
@@ -166,8 +198,10 @@ const AddOrder = ({ store }) => {
           <ProductsList addItem={addItem} />
         </FormGroup>
         <FormGroup check row>
-          <Col sm={{ size: 10, offset: 2 }}>
-            <Button>Submit</Button>
+          <Col>
+            <Button block style={{ fontSize: '2rem' }} onClick={onSubmit}>
+              Submit
+            </Button>
           </Col>
         </FormGroup>
       </Form>

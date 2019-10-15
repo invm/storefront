@@ -1,9 +1,13 @@
 body {
   background: gray;
+  height: 100vh;
 }
 
 a {
   text-decoration: none !important;
+}
+#root {
+  height: 100vh;
 }
 .home-brand {
   z-index: -999;
@@ -17,7 +21,51 @@ a {
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-size: cover;
-  height: 100vh;
+  /* height: fit-content; */
+  min-height: 100vh;
+}
+
+.brand-name {
+  color: white;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.5), -1px -1px rgba(0, 0, 0, 0.5),
+    1px -1px rgba(0, 0, 0, 0.5), -1px 1px rgba(0, 0, 0, 0.5);
+}
+.my-h1 {
+  font-size: 6rem;
+  font-weight: 700;
+}
+.my-h2 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+.my-p {
+  font-weight: 500;
+  font-size: 1.7rem;
+}
+
+.form-container {
+  width: 50%;
+}
+
+@media screen and (max-width: 768px) {
+  .form-container {
+    width: 96%;
+  }
+  .my-wrapper {
+    width: 96%;
+  }
+  .my-h1 {
+    font-size: 4rem;
+  }
+  .my-h2 {
+    font-size: 2.4rem;
+  }
+}
+@media screen and (max-width: 576px) {
+  .my-p {
+    font-size: 1.1rem;
+  }
 }
 
 .badge {

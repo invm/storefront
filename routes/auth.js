@@ -33,14 +33,14 @@ router.post(
   '/',
   [
     check('email', 'Please provide an email.').isEmail(),
-    check('password', 'Password is requried').exists()
+    check('password', 'Password is required').exists()
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res
         .status(400)
-        .json({ msg: 'Bad request over here', errors: errors.array() });
+        .json({ msg: 'Bad request ', errors: errors.array() });
     }
 
     const { email, password } = req.body;
@@ -63,7 +63,7 @@ router.post(
 
       const payload = {
         client: {
-          id: client.id
+          id: client._id
         }
       };
 

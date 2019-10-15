@@ -18,10 +18,6 @@ const ClientSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  phone: {
-    type: String,
-    requiured: true
-  },
   stores: [
     {
       type: mongoose.Schema.Types.ObjectId,
