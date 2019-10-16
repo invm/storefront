@@ -181,7 +181,7 @@ const AddStore = props => {
                 Serves less than 5000 customers a day
               </option>
               <option value='supermarket'>
-                Serves overs 5000 customers a day{' '}
+                Serves over 5000 customers a day{' '}
               </option>
             </Input>
           </Col>

@@ -2,11 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Alert, Badge } from 'reactstrap';
 
-const Store = props => {
-  const { _id, name, size, address, orders } =
-    props.store || props.props.location.state;
+const Store = ({ store }) => {
+  const { _id, name, size, address, orders } = store;
   return (
-    <div className='card' style={storeStyle}>
+    <div className='card fade-in' style={storeStyle}>
       <Alert color='info' style={truncate}>
         {name}
       </Alert>
@@ -27,14 +26,7 @@ const Store = props => {
           Orders: {orders.length}
         </Button>
       </span>
-      <Link
-        to={{
-          pathname: `/store/${_id}`,
-          state: {
-            store: props.store
-          }
-        }}
-      >
+      <Link to={`/store/${_id}`}>
         <Button block color='info' className='my-2'>
           {' '}
           View Details{' '}

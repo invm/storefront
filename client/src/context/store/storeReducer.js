@@ -38,8 +38,8 @@ export default (state, action) => {
     case ADD_STORE:
       return {
         ...state,
-        stores: action.payload,
-        loading: false
+        loading: false,
+        stores: [...state.stores, action.payload]
       };
     case DELETE_STORE:
       return {
@@ -51,28 +51,23 @@ export default (state, action) => {
       return {
         ...state,
         loading: false,
-        stores: [
-          ...state.stores.map(store => {
-            if (store._id === action.payload.id) {
-              return action.payload.store;
-            }
-            return store;
-          })
-        ]
+        stores: state.stores.map(store => {
+          if (store._id === action.payload.id) {
+            return action.payload.store;
+          }
+          return store;
+        })
       };
     case ADD_ORDER:
       return {
         ...state,
         loading: false,
-        stores: [
-          ...state.stores.map(store => {
-            if (store._id === action.payload.id) {
-              store.orders.push(action.payload.order);
-              return action.payload.store;
-            }
-            return store;
-          })
-        ]
+        stores: state.stores.map(store => {
+          if (store._id === action.payload.id) {
+            store.orders.push(action.payload.order);
+          }
+          return store;
+        })
       };
     case UPDATE_ORDER:
       return {
@@ -81,13 +76,12 @@ export default (state, action) => {
         stores: [
           ...state.stores.map(store => {
             if (store._id === action.payload.id) {
-              store.orders.map(order => {
+              store.orders = store.orders.map(order => {
                 if (order._id === action.payload.order._id) {
                   return action.payload.order;
                 }
                 return order;
               });
-              return action.payload.store;
             }
             return store;
           })

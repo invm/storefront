@@ -1,8 +1,8 @@
 import Home from './Home';
 import About from './About';
-import AddOrderPage from './AddOrderPage';
+import AddOrder from './AddOrder';
 import AddStore from './AddStore';
-import Dashboard from './Dashboard';
+import StoresList from './StoresList';
 import StorePage from './StorePage';
 
-export { Home, About, AddStore, AddOrderPage, Dashboard, StorePage };
+export { Home, About, AddStore, AddOrder, StoresList, StorePage };

@@ -1,23 +1,27 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Alert, Container, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import StoreContext from '../../context/store/storeContext';
+import AuthContext from '../../context/auth/authContext';
 import DeleteStoreModal from '../store/storePageModals/DeleteStoreModal.js';
 import UpdateStoreModal from '../store/storePageModals/UpdateStoreModal.js';
 import OrdersList from '../store/OrdersList';
 
 const StorePage = props => {
   const storeContext = useContext(StoreContext);
+  const authContext = useContext(AuthContext);
   // TODO spinner and and check if store belongs to user if so, load store, if not, redirect
-  const storeFromLocation = props.props.location.state.store || props.store;
-  const [store, setStore] = useState(storeFromLocation);
+  const { stores } = storeContext;
+  const store = stores.find(store => store._id === props.match.params.id);
   const { _id, address, client, contact, name, size, orders } = store;
 
   const updateStore = (_id, store) => {
     storeContext.updateStore(_id, store);
-    setStore(store);
+    // props.history.push('/dashboard');
   };
 
+  if (client !== authContext.user._id) return <Redirect to='/' />;
   return (
     <div className=' fade-in mt-2'>
       <Container className='py-3 card'>
@@ -46,8 +50,7 @@ const StorePage = props => {
           <div className='my-1'>
             <Alert style={truncate}>Store ID:{_id}</Alert>
           </div>
-          <p>Size:{size}</p>
-          <p style={truncate}>Client ID{client}</p>
+          <p>Size:{size[0].toUpperCase() + size.slice(1)}</p>
           <div>
             <p className='h6'>Address</p>
             {address.street}
@@ -60,17 +63,16 @@ const StorePage = props => {
           <div>
             <p className='h6'>Contact</p>
             {contact.name}
+            <br />
             {contact.phone}
           </div>
           <hr />
-          <Link to={{ pathname: `/addorder/${_id}`, state: store }}>
+          <Link to={`/addorder/${_id}`}>
             <Button> Add Order</Button>
           </Link>
-          <Button> Update Order</Button>
-          {
-            // TODO update order modal, should receive store id and the updated order
-          }
-          <div>{orders.length > 0 && <OrdersList orders={orders} />}</div>
+          <div>
+            {orders.length > 0 && <OrdersList storeId={_id} orders={orders} />}
+          </div>
         </div>
       </Container>
     </div>

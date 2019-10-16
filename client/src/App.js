@@ -15,9 +15,9 @@ import {
   Home,
   About,
   StorePage,
-  Dashboard,
+  StoresList,
   AddStore,
-  AddOrderPage
+  AddOrder
 } from './components/pages';
 import PrivateRoute from './components/routing/PrivateRoute';
 
@@ -38,13 +38,13 @@ const App = () => {
               <Route exact path='/about' component={About} />
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
-              <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <PrivateRoute exact path='/dashboard' component={StoresList} />
               <PrivateRoute exact path='/addstore' component={AddStore} />
               <PrivateRoute exact path='/store/:id' component={StorePage} />} />
               <PrivateRoute
                 exact
                 path='/addorder/:storeId'
-                component={AddOrderPage}
+                component={AddOrder}
               />
               } /> />
             </Switch>

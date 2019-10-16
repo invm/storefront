@@ -9,8 +9,9 @@ import {
   UPDATE_STORE,
   GET_PRODUCTS,
   STORE_ERROR,
-  CLEAR_STORES
-  // ADD_ORDER,
+  CLEAR_STORES,
+  ADD_ORDER,
+  UPDATE_ORDER
   // UPDATE_ORDER
 } from '../types';
 
@@ -71,37 +72,83 @@ const StoreState = props => {
   };
 
   // Delete store
-  const deleteStore = id => {
-    dispatch({
-      type: DELETE_STORE,
-      payload: id
-    });
+  const deleteStore = async id => {
+    try {
+      await axios.delete(`/api/stores/${id}`);
+      dispatch({
+        type: DELETE_STORE,
+        payload: id
+      });
+    } catch (error) {
+      dispatch({
+        type: STORE_ERROR,
+        payload: error.response.data.msg
+      });
+    }
   };
 
   // Update store
-  const updateStore = (id, store) => {
-    dispatch({
-      type: UPDATE_STORE,
-      payload: { id, store }
-    });
+  const updateStore = async (id, store) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    try {
+      const res = await axios.put(`/api/stores/${id}`, store, config);
+      dispatch({
+        type: UPDATE_STORE,
+        payload: { store, id }
+      });
+    } catch (error) {
+      dispatch({
+        type: STORE_ERROR,
+        payload: error.response.data.msg
+      });
+    }
   };
 
   // Add order
   const addOrder = async (storeId, order) => {
-    await axios.put('/:storeId');
-    dispatch({
-      type: ADD_STORE,
-      payload: { id: storeId, order }
-    });
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    try {
+      const res = await axios.put(`/api/stores/${storeId}`, order, config);
+      dispatch({
+        type: ADD_ORDER,
+        payload: { id: storeId, order: res.data }
+      });
+    } catch (error) {
+      dispatch({
+        type: STORE_ERROR,
+        payload: error.message
+      });
+    }
   };
 
   // Update order
 
-  const updateOrder = (storeId, order) => {
-    dispatch({
-      type: ADD_STORE,
-      payload: { id: storeId, order }
-    });
+  const updateOrder = async (storeId, order) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    try {
+      const res = await axios.put(`/api/stores/${storeId}`, order, config);
+      dispatch({
+        type: UPDATE_ORDER,
+        payload: { id: storeId, order: res.data }
+      });
+    } catch (error) {
+      dispatch({
+        type: STORE_ERROR,
+        payload: error.message
+      });
+    }
   };
 
   // Get products
@@ -145,6 +192,7 @@ const StoreState = props => {
         stores: state.stores,
         error: state.error,
         addStore,
+        loading: state.loading,
         getStores,
         clearStores,
         deleteStore,

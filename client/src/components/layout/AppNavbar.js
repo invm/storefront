@@ -25,7 +25,7 @@ const AppNavbar = () => {
     storeContext.clearStores();
   };
 
-  const { isAuthenticated, logout } = authContext;
+  const { isAuthenticated, logout, user } = authContext;
 
   const authLinks = (
     <Fragment>
@@ -36,7 +36,7 @@ const AppNavbar = () => {
       </NavItem>
       <NavItem>
         <Link className='nav-link' to='/dashboard/'>
-          Dashboard
+          {user ? `${user.company}'s ` : null}Dashboard
         </Link>
       </NavItem>
     </Fragment>

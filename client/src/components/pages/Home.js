@@ -10,7 +10,7 @@ const Home = () => {
   }, []);
   return (
     <>
-      <div className='home-brand'>
+      <div className='home-brand fade-in'>
         <Container style={{ display: 'flex', justifyContent: 'center' }}>
           <div>
             <p className='brand-name my-h1'>Storefront</p>

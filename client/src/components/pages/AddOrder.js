@@ -1,6 +1,6 @@
-import React, { /* useContext ,*/ useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// import StoreContext from '../../context/store/storeContext';
+import StoreContext from '../../context/store/storeContext';
 import {
   Container,
   Col,
@@ -10,13 +10,14 @@ import {
   Label,
   Input
 } from 'reactstrap';
-import ProductsList from './ProductsList';
+import ProductsList from '../store/ProductsList';
 
-const AddOrder = ({ store }) => {
-  // const storeContext = useContext(StoreContext);
+const AddOrder = props => {
+  const storeContext = useContext(StoreContext);
+  const id = props.match.params.storeId;
   const [sum, setSum] = useState(0);
   const [orderProducts, setOrderProducts] = useState([]);
-  const [order, setOrder] = useState({ store: store._id });
+  const [order, setOrder] = useState({ store: id });
 
   useEffect(() => {
     let newSum = orderProducts.reduce((total, current) => {
@@ -72,11 +73,13 @@ const AddOrder = ({ store }) => {
     if (orderProducts.length > 0) {
       let newOrder = {
         ...order,
-        orderDate: new Date().toString().slice(0, 21)
+        orderDate: new Date().toString().slice(0, 21),
+        products: orderProducts,
+        sum
       };
-      console.log(newOrder);
-      // storeContext.addOrder(store._id);
+      storeContext.addOrder(order.store, { newOrder });
     }
+    setTimeout(props.history.push('/dashboard'), 500);
   };
 
   const onChange = e => {
@@ -95,24 +98,10 @@ const AddOrder = ({ store }) => {
             Store ID
           </Label>
           <Col xs={8}>
-            <Input
-              disabled
-              type='text'
-              name='store-id'
-              value={store._id}
-              id='id'
-            />
+            <Input disabled type='text' name='store-id' value={id} id='id' />
           </Col>
           <Col>
-            <Link
-              className='mx-1'
-              to={{
-                pathname: `/store/${store._id}`,
-                state: {
-                  store
-                }
-              }}
-            >
+            <Link className='mx-1' to={`/store/${id}`}>
               <Button
                 color='dark'
                 style={{

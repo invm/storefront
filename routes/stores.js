@@ -79,6 +79,8 @@ router.post(
 
 router.put('/:storeId', auth, async (req, res) => {
   const { name, address, contact, size, newOrder, updateOrder } = req.body;
+  console.log(req.body);
+  console.log(req.params);
   // Build shop object based on submitted fields,
   const storeFields = {};
   if (name) storeFields.name = name;
@@ -109,6 +111,8 @@ router.put('/:storeId', auth, async (req, res) => {
         store.orders.push(updateOrder);
         store.save();
       }
+      console.log(store.orders[store.orders.length - 1]);
+      res.json(store.orders[store.orders.length - 1]);
     }
     if (Object.keys(storeFields).length > 0) {
       // Handle store info

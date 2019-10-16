@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import UpdateOrderModal from './storePageModals/UpdateOrderModal';
 import { Alert, Badge, Collapse, Button, CardBody, Card } from 'reactstrap';
 
-const OrdersList = ({ orders }) => {
+const OrdersList = ({ orders, storeId }) => {
   const [collapse, setCollapse] = useState(false);
 
   const toggle = () => {
@@ -44,12 +45,13 @@ const OrdersList = ({ orders }) => {
                 }}
               >
                 <span>Order #{_id}</span>
+                <UpdateOrderModal storeId={storeId} order={order} />
                 <Badge color={`${status ? 'success' : 'danger'}`}>
                   {status ? 'Active' : 'Inactive'}
                 </Badge>
               </Alert>
               <span>Order date: {orderDate}</span>
-              <h5>Total price: {sum}</h5>
+              <h5>Total price: {sum.toFixed(2)}$</h5>
               <span>
                 {status ? (
                   <>
@@ -111,7 +113,7 @@ const Products = ({ products }) => {
         <Card>
           <CardBody>
             {products.map(product => (
-              <p key={Math.random() * Math.random()}>
+              <p key={product._id}>
                 <span className='text-primary'>Product:{product.name}</span>
                 <br />
                 <span>Quantity ordered: {product.quantityOrdered}</span>
