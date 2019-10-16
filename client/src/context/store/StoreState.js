@@ -95,7 +95,7 @@ const StoreState = props => {
       }
     };
     try {
-      const res = await axios.put(`/api/stores/${id}`, store, config);
+      await axios.put(`/api/stores/${id}`, store, config);
       dispatch({
         type: UPDATE_STORE,
         payload: { store, id }

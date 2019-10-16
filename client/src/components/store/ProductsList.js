@@ -107,7 +107,7 @@ const Product = ({ product, addItem }) => {
   };
   return (
     <div key={product._id} className='card' style={categoryStyle}>
-      <Badge color='warning'>
+      <Badge color='info'>
         {product.name[0].toUpperCase() + product.name.slice(1)}{' '}
       </Badge>
       Supplier: {product.supplier} <br />
@@ -123,7 +123,9 @@ const Product = ({ product, addItem }) => {
           onChange={onChange}
         />
         <InputGroupAddon addonType='prepend'>
-          <Button onClick={onClick}>Add</Button>
+          <Button color='primary' onClick={onClick}>
+            Add
+          </Button>
         </InputGroupAddon>
       </InputGroup>
     </div>

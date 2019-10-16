@@ -1,5 +1,4 @@
 body {
-  background: gray;
   height: 100vh;
 }
 
@@ -7,7 +6,7 @@ a {
   text-decoration: none !important;
 }
 #root {
-  height: 100vh;
+  height: 100%;
 }
 .home-brand {
   z-index: -999;
@@ -66,10 +65,6 @@ a {
   .my-p {
     font-size: 1.1rem;
   }
-}
-
-.badge {
-  font-size: 100% !important;
 }
 
 /* Stores blocks inside stores-list */

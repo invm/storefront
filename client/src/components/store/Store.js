@@ -9,11 +9,11 @@ const Store = ({ store }) => {
       <Alert color='info' style={truncate}>
         {name}
       </Alert>
-      <Badge color='success'>
-        {size.charAt(0).toUpperCase() + size.slice(1)}
-      </Badge>
+      <Badge color='info'>{size.charAt(0).toUpperCase() + size.slice(1)}</Badge>
       <span>
-        Address: {address.street},{address.city}
+        Address: {address.street}
+        {', '}
+        {address.city}
       </span>
       <span>
         Last Order :{' '}

@@ -1,5 +1,6 @@
 export const GET_STORES = 'GET_STORES';
 export const CLEAR_STORES = 'CLEAR_STORES';
+export const SET_LOADING = 'SET_LOADING';
 export const ADD_STORE = 'ADD_STORE';
 export const DELETE_STORE = 'DELETE_STORE';
 export const UPDATE_STORE = 'UPDATE_STORE';

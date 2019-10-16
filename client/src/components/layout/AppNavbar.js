@@ -69,7 +69,7 @@ const AppNavbar = () => {
           <span role='img' aria-label='truck'>
             🚚{' '}
           </span>
-          Storefront
+          Store<span className='text-primary'>front</span>
         </Link>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>

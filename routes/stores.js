@@ -17,6 +17,16 @@ router.get('/', auth, async (req, res) => {
     });
     // Loop through every store, check every order, if delivery date is passed,
     // then change isDelivered to true, update, than send response.
+
+    stores.forEach(store => {
+      store.orders.map(order => {
+        if (new Date(order.deliveryDate).getDate() < new Date().getDate()) {
+          order.isDelivered = true;
+        }
+        return order;
+      });
+      return store.save();
+    });
     let data = {
       client: req.client,
       stores
@@ -79,8 +89,6 @@ router.post(
 
 router.put('/:storeId', auth, async (req, res) => {
   const { name, address, contact, size, newOrder, updateOrder } = req.body;
-  console.log(req.body);
-  console.log(req.params);
   // Build shop object based on submitted fields,
   const storeFields = {};
   if (name) storeFields.name = name;
@@ -111,7 +119,6 @@ router.put('/:storeId', auth, async (req, res) => {
         store.orders.push(updateOrder);
         store.save();
       }
-      console.log(store.orders[store.orders.length - 1]);
       res.json(store.orders[store.orders.length - 1]);
     }
     if (Object.keys(storeFields).length > 0) {

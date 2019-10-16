@@ -11,7 +11,8 @@ import {
   LOGIN_SUCCESS,
   LOGOUT,
   AUTH_ERROR,
-  USER_LOADED
+  USER_LOADED,
+  SET_LOADING
 } from '../types';
 
 const AuthState = props => {
@@ -24,6 +25,8 @@ const AuthState = props => {
   };
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
+
+  const setLoading = () => dispatch({ type: SET_LOADING });
 
   // Load user
   const loadUser = async () => {
@@ -45,6 +48,7 @@ const AuthState = props => {
 
   // Register user
   const register = async formData => {
+    setLoading();
     const config = {
       headers: {
         'Content-Type': 'application/json'
@@ -68,6 +72,7 @@ const AuthState = props => {
 
   // Login user
   const login = async formData => {
+    setLoading();
     const config = {
       headers: {
         'Content-Type': 'application/json'

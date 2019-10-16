@@ -38,7 +38,7 @@ router.post(
       let client = await Client.findOne({ email });
       if (client) {
         return res.status(400).json({
-          msg: 'Client already exists.'
+          msg: 'Email already registered, try another one.'
         });
       }
 

@@ -30,10 +30,6 @@ const OrderSchema = new Schema({
     type: Boolean,
     default: false
   },
-  signedBy: {
-    name: String,
-    phone: String
-  },
   sum: Number
 });
 

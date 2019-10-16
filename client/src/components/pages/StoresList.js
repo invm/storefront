@@ -16,10 +16,13 @@ const StoresList = () => {
   }, []);
 
   return (
-    <Container style={{ padding: '0.5rem' }} className='card mt-2 py-3 fade-in'>
+    <Container
+      style={{ padding: '0.5rem', height: '100%' }}
+      className='bg-light card my-2 py-3 fade-in'
+    >
       {stores !== null && !loading ? (
         <>
-          <h2 style={{ textAlign: 'center' }}>Stores Management</h2>
+          <h2 className='text-center text-primary'>Stores Management</h2>
           <div className='mb-2'>
             <Link to='/addstore'>
               {stores.length === 0 && stores !== null ? (

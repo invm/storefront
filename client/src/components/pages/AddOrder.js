@@ -79,7 +79,7 @@ const AddOrder = props => {
       };
       storeContext.addOrder(order.store, { newOrder });
     }
-    setTimeout(props.history.push('/dashboard'), 500);
+    setTimeout(props.history.push(`/store/${id}`), 500);
   };
 
   const onChange = e => {

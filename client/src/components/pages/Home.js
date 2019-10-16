@@ -13,9 +13,12 @@ const Home = () => {
       <div className='home-brand fade-in'>
         <Container style={{ display: 'flex', justifyContent: 'center' }}>
           <div>
-            <p className='brand-name my-h1'>Storefront</p>
+            <p className='brand-name my-h1'>
+              Store<span className='text-primary'>front</span>
+            </p>
             <p className='brand-name my-h2'>
-              The all-in-one solution for advanced logistics needs.
+              The <span className='text-primary'>all-in-one</span> solution for
+              advanced logistics needs.
             </p>
             <p className='brand-name my-p'>
               Storefront provides simple solutions for complicated issues
@@ -51,9 +54,10 @@ const Home = () => {
             </span>
             <br />
             <span>
-              Storefront works with over 10000 suppliers and importers from
-              around the globe to provide the best products at the best rate and
-              as soon as needed.
+              Storefront works with{' '}
+              <span className='text-primary'>over 10000 suppliers</span> and
+              importers from around the globe to provide the best products at
+              the best rate and as soon as needed.
             </span>
           </span>
           <div className='row'>
@@ -123,6 +127,11 @@ const Home = () => {
               dolorum veritatis aperiam tempora atque temporibus facilis nisi
               soluta. Saepe adipisci odio explicabo commodi nulla.
             </p>
+          </div>
+          <div className='d-flex justify-content-center align-items-center'>
+            <span className='text-primary'>
+              Copyright © 2019 Storefront. All Rights Reserved To Michael Ionov
+            </span>
           </div>
         </div>
       </Container>

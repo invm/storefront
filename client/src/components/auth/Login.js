@@ -11,7 +11,7 @@ const Login = props => {
     email: ''
   });
   const { setAlert, alerts, removeAlert } = alertContext;
-  const { login, error, clearErrors, isAuthenticated } = authContext;
+  const { login, error, clearErrors, isAuthenticated, loading } = authContext;
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -40,8 +40,6 @@ const Login = props => {
   };
 
   const { password, email } = user;
-  const { loading } = authContext;
-  if (loading) return <Spinner />;
   return (
     <Container
       style={{
@@ -76,15 +74,34 @@ const Login = props => {
               id='password'
             />
           </FormGroup>
-          <FormGroup row>
-            <Input
-              type='submit'
-              className='btn btn-primary'
-              style={{ fontSize: '2rem' }}
-              onClick={onSubmit}
-              value='Register'
-            />
-          </FormGroup>
+
+          {loading ? (
+            <FormGroup row>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
+                <Spinner
+                  className='fade-in'
+                  style={{ width: '7rem', height: '7rem' }}
+                  color='info'
+                />
+              </div>
+            </FormGroup>
+          ) : (
+            <FormGroup row>
+              <Input
+                type='submit'
+                className='btn btn-primary'
+                style={{ fontSize: '2rem' }}
+                onClick={onSubmit}
+                value='Login'
+              />
+            </FormGroup>
+          )}
         </Form>
       </div>
     </Container>

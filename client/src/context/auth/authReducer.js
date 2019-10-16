@@ -6,11 +6,17 @@ import {
   LOGIN_SUCCESS,
   LOGOUT,
   AUTH_ERROR,
-  USER_LOADED
+  USER_LOADED,
+  SET_LOADING
 } from '../types';
 
 export default (state, action) => {
   switch (action.type) {
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: true
+      };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
       localStorage.setItem('token', action.payload.token);

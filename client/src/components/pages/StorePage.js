@@ -11,7 +11,6 @@ import OrdersList from '../store/OrdersList';
 const StorePage = props => {
   const storeContext = useContext(StoreContext);
   const authContext = useContext(AuthContext);
-  // TODO spinner and and check if store belongs to user if so, load store, if not, redirect
   const { stores } = storeContext;
   const store = stores.find(store => store._id === props.match.params.id);
   const { _id, address, client, contact, name, size, orders } = store;
@@ -21,12 +20,13 @@ const StorePage = props => {
     // props.history.push('/dashboard');
   };
 
-  if (client !== authContext.user._id) return <Redirect to='/' />;
+  if (stores.length === 0 || client !== authContext.user._id)
+    return <Redirect to='/' />;
   return (
-    <div className=' fade-in mt-2'>
+    <div className='fade-in mt-2'>
       <Container className='py-3 card'>
-        <div style={flex}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className='d-flex flex-column align-items-stretch'>
+          <div className='d-flex justify-content-between'>
             <h5 style={truncate}>{name}</h5>
             <span style={{ display: 'flex' }}>
               <Link className='mx-1' to='/dashboard'>
@@ -50,21 +50,20 @@ const StorePage = props => {
           <div className='my-1'>
             <Alert style={truncate}>Store ID:{_id}</Alert>
           </div>
-          <p>Size:{size[0].toUpperCase() + size.slice(1)}</p>
+          <p>Size: {size[0].toUpperCase() + size.slice(1)}</p>
           <div>
             <p className='h6'>Address</p>
-            {address.street}
+            Street: {address.street}
             <br />
-
-            {address.city}
+            City: {address.city}
             {', '}
             {address.zipcode}
           </div>
           <div>
             <p className='h6'>Contact</p>
-            {contact.name}
+            Name: {contact.name}
             <br />
-            {contact.phone}
+            Phone: {contact.phone}
           </div>
           <hr />
           <Link to={`/addorder/${_id}`}>
@@ -77,12 +76,6 @@ const StorePage = props => {
       </Container>
     </div>
   );
-};
-
-const flex = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'stretch'
 };
 
 const truncate = {

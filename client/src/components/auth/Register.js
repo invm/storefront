@@ -1,21 +1,27 @@
 import React, { useState, useContext, useEffect } from 'react';
 import AlertContext from '../../context/alert/alertContext';
 import AuthContext from '../../context/auth/authContext';
-import { Form, FormGroup, Label, Input, Container } from 'reactstrap';
+import { Form, FormGroup, Label, Input, Container, Spinner } from 'reactstrap';
 
 const Register = props => {
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
 
   const { setAlert } = alertContext;
-  const { register, error, clearErrors, isAuthenticated } = authContext;
+  const {
+    register,
+    error,
+    clearErrors,
+    isAuthenticated,
+    loading
+  } = authContext;
 
   useEffect(() => {
     if (isAuthenticated) {
       props.history.push('/');
     }
 
-    if (error === 'Client already exists.') {
+    if (error === 'Email already registered, try another one.') {
       setAlert(error, 'danger');
       clearErrors();
     }
@@ -120,15 +126,33 @@ const Register = props => {
               minLength='6'
             />
           </FormGroup>
-          <FormGroup row>
-            <Input
-              type='submit'
-              className='btn btn-primary'
-              style={{ fontSize: '2rem' }}
-              onClick={onSubmit}
-              value='Register'
-            />
-          </FormGroup>
+          {loading ? (
+            <FormGroup row>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
+                <Spinner
+                  className='fade-in'
+                  style={{ width: '7rem', height: '7rem' }}
+                  color='info'
+                />
+              </div>
+            </FormGroup>
+          ) : (
+            <FormGroup row>
+              <Input
+                type='submit'
+                className='btn btn-primary'
+                style={{ fontSize: '2rem' }}
+                onClick={onSubmit}
+                value='Login'
+              />
+            </FormGroup>
+          )}
         </Form>
       </div>
     </Container>
