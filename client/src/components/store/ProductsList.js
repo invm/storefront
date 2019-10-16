@@ -14,7 +14,6 @@ import {
 const ProductsList = ({ addItem }) => {
   const storeContext = useContext(StoreContext);
   const products = storeContext.products;
-  // TODO !
   const [category, setCategory] = useState('bakery');
   const [loading, setLoading] = useState(true);
 

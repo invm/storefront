@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import StoreContext from '../../context/store/storeContext';
 import AuthContext from '../../context/auth/authContext';
+import AlertContext from '../../context/alert/alertContext';
 import {
   Container,
   Col,
@@ -14,8 +15,10 @@ import {
 
 const AddStore = props => {
   const storeContext = useContext(StoreContext);
+  const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
   const { client } = storeContext;
+  const { setAlert } = alertContext;
   const [store, setStore] = useState({
     client,
     size: 'small',
@@ -52,27 +55,34 @@ const AddStore = props => {
     }
   };
 
-  // Validate
-  // const validate = e => {
-  //   // TODO Minimal validation, maybe copy from whiskrs site
-  // };
-
   const onSubmit = e => {
-    storeContext.addStore(store);
-    setStore({
-      client,
-      size: 'small',
-      name: '',
-      address: {
-        city: '',
-        street: '',
-        zipcode: ''
-      },
-      contact: {
+    e.preventDefault();
+    if (
+      store.name === '' ||
+      store.address.city === '' ||
+      store.address.street === '' ||
+      store.address.zipcode === ''
+    )
+      setAlert('Please enter all fields', 'danger');
+    else if (store.contact.name === '' || store.contact.phone === '')
+      setAlert('Please enter contact details.', 'warning');
+    else {
+      storeContext.addStore(store);
+      setStore({
+        client,
+        size: 'small',
         name: '',
-        phone: ''
-      }
-    });
+        address: {
+          city: '',
+          street: '',
+          zipcode: ''
+        },
+        contact: {
+          name: '',
+          phone: ''
+        }
+      });
+    }
   };
 
   return (
